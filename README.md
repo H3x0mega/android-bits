@@ -8,7 +8,7 @@ The project currently contains the following components:
 License
 -------
 
-    Copyright 2015 H3x0mega
+    Copyright 2015 Francois Jeanneret
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
