@@ -1,5 +1,8 @@
 # android-bits
-Android bits is a group of useful and easy to use Android components
+Android bits is a group of useful and easy to use Android components.
+
+The project currently contains the following components:
+* LoaderView: A custom view that shows the user an indefinite ```ProgressBar``` while content is being loaded.
 
 
 License
