@@ -20,10 +20,10 @@ android {
     }
 }
 
-Properties properties = new Properties()
+/*Properties properties = new Properties()
 properties.load(project.rootProject.file('bintray.properties').newDataInputStream())
 
-/*bintray {
+bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
