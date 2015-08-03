@@ -24,11 +24,11 @@ import h3x0mega.loaderview.R;
 
 /**
  * View including a progress bar and an error layout to be used in asynchronous operation
- * Created by H3x0mega on 8/1/2015.
+ * Created by Francois on 8/1/2015.
  */
 public class LoaderView extends FrameLayout {
 
-    private final static int ANIMATION_DURATION = 600;
+    private final static int ANIMATION_DURATION = 500;
 
     private RelativeLayout progressContainer;
     private RelativeLayout errorContainer;
@@ -49,7 +49,8 @@ public class LoaderView extends FrameLayout {
      * @param attrs Set containing the following arguments
      *              error_image (Reference): ID of the image resource to be shown. May be null
      *              error_message (String): Message to be displayed on the error screen. May be null
-     *              loader_message (String): Message to be displayed on the loading screen. May be null
+     *              loader_message (String): Message to be displayed on the loading screen. May be
+     *              null
      */
     private void initialize(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.LoaderView);
@@ -135,9 +136,9 @@ public class LoaderView extends FrameLayout {
     }
 
     /**
-     * Plays in order the Animators contained in the queue. The queue is respected,
-     * making the animators wait until the previous one has already completed. This method
-     * works in along with the onAnimationEnded method
+     * Plays in order the Animators contained in the queue. The queue is respected, making the
+     * animators wait until the previous one has already completed. This method works along the
+     * onAnimationEnded method
      * @param animator If != null, the animator will be added to the queue
      */
     private void playAnimatorQueue(Animator animator) {
@@ -177,7 +178,7 @@ public class LoaderView extends FrameLayout {
     /**
      * Hides the error layout
      */
-    private void hideError() {
+    public void hideError() {
         playAnimatorQueue(showProgressAnimatorSet);
     }
 
@@ -196,6 +197,14 @@ public class LoaderView extends FrameLayout {
         });
 
         playAnimatorQueue(animator);
+    }
+
+    /**
+     * Resets the loader to it's initial state
+     */
+    public void reset() {
+        this.setAlpha(1f);
+        this.setVisibility(VISIBLE);
     }
 
     /**

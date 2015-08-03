@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Android Bits</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- LoaderView Fragment -->
+    <string name="loaderview_show_error">Show Error</string>
+    <string name="loaderview_show_loading">Show Loading</string>
+    <string name="loaderview_hide">Hide</string>
+    <string name="loaderview_reset">Reset</string>
 </resources>
