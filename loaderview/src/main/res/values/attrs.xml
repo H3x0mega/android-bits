@@ -7,8 +7,8 @@
         <attr name="loader_message" format="string"/>
 
         <attr name="loader_color" format="color"/>
+        <attr name="loader_message_text_color" format="color"/>
         <attr name="error_message_text_color" format="color"/>
         <attr name="button_text_color" format="color"/>
-        <attr name="progress_message_text_color" format="color"/>
     </declare-styleable>
 </resources>

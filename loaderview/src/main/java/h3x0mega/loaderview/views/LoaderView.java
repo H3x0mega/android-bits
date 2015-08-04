@@ -58,6 +58,10 @@ public class LoaderView extends FrameLayout {
      *              error_message (String): Message to be displayed on the error screen. May be null
      *              loader_message (String): Message to be displayed on the loading screen. May be
      *              null
+     *              loader_color (Color): Color for the indeterminate ProgressBar
+     *              loader_message_text_color (Color): Color for the progress message
+     *              error_message_text_color (Color): Color for the error message
+     *              button_text_color (Color): Color for the 'Try Again' button's text
      */
     private void initialize(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.LoaderView);
@@ -75,7 +79,7 @@ public class LoaderView extends FrameLayout {
 
         String progressString = typedArray.getString(R.styleable.LoaderView_loader_message);
         progressMessage.setText(progressString != null ? progressString : getContext().getString(R.string.default_loading));
-        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_progress_message_text_color, getResources().getColor(R.color.text_color)));
+        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_loader_message_text_color, getResources().getColor(R.color.text_color)));
 
         String errorString = typedArray.getString(R.styleable.LoaderView_error_message);
         errorMessage.setText(errorString != null ? errorString : getContext().getString(R.string.default_error));
@@ -236,7 +240,7 @@ public class LoaderView extends FrameLayout {
     }
 
     /**
-     * Resets the loader to it's initial state
+     * Resets the loader to its initial state
      */
     public void reset() {
         queue.clear();
