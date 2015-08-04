@@ -6,4 +6,6 @@
     <string name="loaderview_show_loading">Show Loading</string>
     <string name="loaderview_hide">Hide</string>
     <string name="loaderview_reset">Reset</string>
+    <string name="loaderview_error_message">Operation Failed :(</string>
+    <string name="loaderview_loader_message">Loading info...</string>
 </resources>

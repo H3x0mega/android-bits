@@ -22,6 +22,7 @@ public class ToolbarActivity extends Activity {
         View layout = getLayoutInflater().inflate(R.layout.activity_toolbar, null);
         content = (FrameLayout) layout.findViewById(R.id.content);
         toolbar = (Toolbar) layout.findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(0xFFFFFFFF);
 
         getLayoutInflater().inflate(layoutResID, content, true);
         super.setContentView(layout);

@@ -45,8 +45,16 @@
     </LinearLayout>
 
     <h3x0mega.loaderview.views.LoaderView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/loader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:error_message="@string/loaderview_error_message"
+        app:loader_message="@string/loaderview_loader_message"
+        app:loader_color="@color/sample_color"
+        app:loader_message_text_color="@color/sample_color"
+        app:error_message_text_color="@color/sample_color"
+        app:button_text_color="@color/sample_color"
+        app:error_image="@mipmap/ic_launcher"/>
 
 </LinearLayout>
