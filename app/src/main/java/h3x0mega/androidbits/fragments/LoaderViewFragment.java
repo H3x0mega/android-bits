@@ -14,7 +14,7 @@ import h3x0mega.loaderview.views.LoaderView;
  * Fragment that shows the behavior of the LoaderView
  * Created by Francois on 03/08/2015.
  */
-public class LoaderViewFragment extends Fragment implements View.OnClickListener {
+public class LoaderViewFragment extends Fragment implements View.OnClickListener, LoaderView.TryAgainCallback {
 
     private LoaderView loaderView;
 
@@ -32,6 +32,17 @@ public class LoaderViewFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loaderView.setTryAgainListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        loaderView.removeTryAgainListener();
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.show_error:
@@ -39,7 +50,7 @@ public class LoaderViewFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.show_loading:
-                loaderView.hideError();
+                loaderView.showProgressBar();
                 break;
 
             case R.id.hide:
@@ -50,5 +61,10 @@ public class LoaderViewFragment extends Fragment implements View.OnClickListener
                 loaderView.reset();
                 break;
         }
+    }
+
+    @Override
+    public void onTryAgain() {
+        loaderView.showProgressBar();
     }
 }

@@ -6,7 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -63,18 +63,18 @@ public class LoaderView extends FrameLayout {
         final ImageView errorImage = (ImageView) root.findViewById(R.id.error_image);
         Button tryAgain = (Button) root.findViewById(R.id.try_again);
 
-        ColorDrawable colorDrawable = new ColorDrawable(typedArray.getColor(R.styleable.LoaderView_loader_color, getResources().getColor(R.color.accent)));
-        ((ProgressBar) root.findViewById(R.id.progress_bar)).setProgressDrawable(colorDrawable);
+        ((ProgressBar) root.findViewById(R.id.progress_bar)).getIndeterminateDrawable()
+                .setColorFilter(typedArray.getColor(R.styleable.LoaderView_loader_color, getResources().getColor(R.color.progress_bar_color)), PorterDuff.Mode.SRC_IN);
 
         String progressString = typedArray.getString(R.styleable.LoaderView_loader_message);
         progressMessage.setText(progressString != null ? progressString : getContext().getString(R.string.default_loading));
-        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_progress_message_text_color, getResources().getColor(R.color.secondary_text)));
+        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_progress_message_text_color, getResources().getColor(R.color.text_color)));
 
         String errorString = typedArray.getString(R.styleable.LoaderView_error_message);
         errorMessage.setText(errorString != null ? errorString : getContext().getString(R.string.default_error));
-        errorMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_error_message_text_color, getResources().getColor(R.color.secondary_text)));
+        errorMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_error_message_text_color, getResources().getColor(R.color.text_color)));
 
-        tryAgain.setTextColor(typedArray.getColor(R.styleable.LoaderView_button_text_color, getResources().getColor(R.color.accent_dark)));
+        tryAgain.setTextColor(typedArray.getColor(R.styleable.LoaderView_button_text_color, getResources().getColor(R.color.text_color)));
 
         Drawable drawable = typedArray.getDrawable(R.styleable.LoaderView_error_image);
         if (drawable != null)
@@ -89,7 +89,7 @@ public class LoaderView extends FrameLayout {
             public void onClick(View view) {
                 if (listener != null) {
                     listener.onTryAgain();
-                    hideError();
+                    showProgressBar();
                 }
             }
         });
@@ -169,21 +169,22 @@ public class LoaderView extends FrameLayout {
     }
 
     /**
-     * Shows the error layout
+     * Shows the error layout, showing the 'Try Again' button, an error image and an error message
      */
     public void showError() {
         playAnimatorQueue(showErrorAnimatorSet);
     }
 
     /**
-     * Hides the error layout
+     * Hides the error layout, showing the ProgressBar and the loading text
      */
-    public void hideError() {
+    public void showProgressBar() {
         playAnimatorQueue(showProgressAnimatorSet);
     }
 
     /**
-     * Hides the loader completely using a fade animation
+     * Hides the loader completely using a fade animation. This should be used when LoaderView is
+     * going to be removed
      */
     public void finish() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(this, "alpha", 1f, 0f);
@@ -191,8 +192,8 @@ public class LoaderView extends FrameLayout {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
                 LoaderView.this.setVisibility(GONE);
+                onAnimationEnded();
             }
         });
 
@@ -203,8 +204,14 @@ public class LoaderView extends FrameLayout {
      * Resets the loader to it's initial state
      */
     public void reset() {
-        this.setAlpha(1f);
+        queue.clear();
+
         this.setVisibility(VISIBLE);
+        this.setAlpha(1f);
+        progressContainer.setVisibility(VISIBLE);
+        progressContainer.setAlpha(1f);
+        errorContainer.setVisibility(GONE);
+        errorContainer.setAlpha(0f);
     }
 
     /**
