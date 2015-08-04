@@ -32,6 +32,11 @@ public class LoaderView extends FrameLayout {
 
     private RelativeLayout progressContainer;
     private RelativeLayout errorContainer;
+    private TextView progressMessage;
+    private TextView errorMessage;
+    private ImageView errorImage;
+    private Button tryAgain;
+    private ProgressBar progressBar;
 
     private TryAgainCallback listener;
     private AnimatorSet showErrorAnimatorSet;
@@ -39,10 +44,12 @@ public class LoaderView extends FrameLayout {
     private List<Animator> queue;
     private boolean currentlyPlaying;
 
+    //region Constructors
     public LoaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(attrs);
     }
+    //endregion
 
     /**
      * Initializes this view's attributes
@@ -51,6 +58,10 @@ public class LoaderView extends FrameLayout {
      *              error_message (String): Message to be displayed on the error screen. May be null
      *              loader_message (String): Message to be displayed on the loading screen. May be
      *              null
+     *              loader_color (Color): Color for the indeterminate ProgressBar
+     *              loader_message_text_color (Color): Color for the progress message
+     *              error_message_text_color (Color): Color for the error message
+     *              button_text_color (Color): Color for the 'Try Again' button's text
      */
     private void initialize(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.LoaderView);
@@ -58,17 +69,17 @@ public class LoaderView extends FrameLayout {
 
         progressContainer = (RelativeLayout) root.findViewById(R.id.progress_container);
         errorContainer = (RelativeLayout) root.findViewById(R.id.error_container);
-        final TextView progressMessage = (TextView) root.findViewById(R.id.progress_message);
-        TextView errorMessage  = (TextView) root.findViewById(R.id.error_message);
-        final ImageView errorImage = (ImageView) root.findViewById(R.id.error_image);
-        Button tryAgain = (Button) root.findViewById(R.id.try_again);
+        progressMessage = (TextView) root.findViewById(R.id.progress_message);
+        errorMessage  = (TextView) root.findViewById(R.id.error_message);
+        errorImage = (ImageView) root.findViewById(R.id.error_image);
+        tryAgain = (Button) root.findViewById(R.id.try_again);
+        progressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
 
-        ((ProgressBar) root.findViewById(R.id.progress_bar)).getIndeterminateDrawable()
-                .setColorFilter(typedArray.getColor(R.styleable.LoaderView_loader_color, getResources().getColor(R.color.progress_bar_color)), PorterDuff.Mode.SRC_IN);
+        progressBar.getIndeterminateDrawable().setColorFilter(typedArray.getColor(R.styleable.LoaderView_loader_color, getResources().getColor(R.color.progress_bar_color)), PorterDuff.Mode.SRC_IN);
 
         String progressString = typedArray.getString(R.styleable.LoaderView_loader_message);
         progressMessage.setText(progressString != null ? progressString : getContext().getString(R.string.default_loading));
-        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_progress_message_text_color, getResources().getColor(R.color.text_color)));
+        progressMessage.setTextColor(typedArray.getColor(R.styleable.LoaderView_loader_message_text_color, getResources().getColor(R.color.text_color)));
 
         String errorString = typedArray.getString(R.styleable.LoaderView_error_message);
         errorMessage.setText(errorString != null ? errorString : getContext().getString(R.string.default_error));
@@ -134,6 +145,34 @@ public class LoaderView extends FrameLayout {
 
         addView(root);
     }
+
+    //region Setters
+
+    public void setProgressMessage(String progressMessage) {
+        this.progressMessage.setText(progressMessage);
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage.setText(errorMessage);
+    }
+
+    public void setErrorImage(int errorImageId) {
+        this.errorImage.setImageResource(errorImageId);
+    }
+
+    public void setErrorImage(Drawable drawable) {
+        this.errorImage.setImageDrawable(drawable);
+    }
+
+    public void setTryAgainButtonText(String tryAgainText) {
+        this.tryAgain.setText(tryAgainText);
+    }
+
+    public void setProgressBarColor(int colorId) {
+        progressBar.getIndeterminateDrawable().setColorFilter(colorId, PorterDuff.Mode.SRC_IN);
+    }
+
+    //endregion
 
     /**
      * Plays in order the Animators contained in the queue. The queue is respected, making the
@@ -201,7 +240,7 @@ public class LoaderView extends FrameLayout {
     }
 
     /**
-     * Resets the loader to it's initial state
+     * Resets the loader to its initial state
      */
     public void reset() {
         queue.clear();
@@ -213,6 +252,8 @@ public class LoaderView extends FrameLayout {
         errorContainer.setVisibility(GONE);
         errorContainer.setAlpha(0f);
     }
+
+    //region TryAgainCallback
 
     /**
      * Sets the listener for the 'Try Again' action
@@ -236,4 +277,6 @@ public class LoaderView extends FrameLayout {
     public interface TryAgainCallback {
         void onTryAgain();
     }
+
+    //endregion
 }
