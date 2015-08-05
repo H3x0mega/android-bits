@@ -65,6 +65,6 @@ public class LoaderViewFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onTryAgain() {
-        loaderView.showProgressBar();
+        //Do stuff
     }
 }
