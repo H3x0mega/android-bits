@@ -28,7 +28,7 @@ import h3x0mega.loaderview.R;
  */
 public class LoaderView extends FrameLayout {
 
-    private final static int ANIMATION_DURATION = 500;
+    private final static int ANIMATION_DURATION = 400;
 
     private RelativeLayout progressContainer;
     private RelativeLayout errorContainer;
